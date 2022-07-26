@@ -1,0 +1,28 @@
+name: Basic TestCafe Workflow
+on: [push]
+
+jobs:
+  build:
+    name: Run TestCafe Tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install TestCafe from 'npm' and Run Tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: "chrome tests"
+                 
+      - name: Upload test results
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: __tests__/__results__/*.xml
+
+      - name: Create test report
+        uses: ./
+        if: success() || failure()
+        with:
+          name: JEST Tests
+          path: __tests__/__results__/*.xml
+          reporter: jest-junit
