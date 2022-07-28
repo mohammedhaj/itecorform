@@ -16,6 +16,6 @@ jobs:
         if: always()
         with:
          name: TestCafe Tests
-         path: "**/test-results.trx"                            
-         reporter: TestCafe-trx
+         path: target/surefire-reports/*.xml                           
+         reporter: java-junit
          fail-on-error: true
